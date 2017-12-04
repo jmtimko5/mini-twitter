@@ -41,6 +41,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .realmName(REALM)
             .authenticationEntryPoint(getBasicAuthEntryPoint());
 
+        http.requiresChannel()
+                .anyRequest()
+                .requiresSecure();
+
 //        http.addFilterAfter(new CustomFilter(),
 //                BasicAuthenticationFilter.class);
 
