@@ -25,7 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("batman").password("abc123").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("tom").password("abc123").roles("USER");
     }
 
@@ -44,6 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.requiresChannel()
                 .anyRequest()
                 .requiresSecure();
+
+
 
 //        http.addFilterAfter(new CustomFilter(),
 //                BasicAuthenticationFilter.class);
