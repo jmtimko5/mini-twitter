@@ -26,12 +26,8 @@ public class MessagesServiceImpl implements MessagesService{
 //            throw new ObjectNotFoundException()
 //        }
 
-
         User tweeter = userRepository.getUserByHandle(handle);
 
-        System.out.println(tweeter.getHandle());
-        System.out.println(tweeter.getId());
-        System.out.println(messagesRepository.getAllMessagesForUser(tweeter.getId()));
         return messagesRepository.getAllMessagesForUser(tweeter.getId());
     }
 }
