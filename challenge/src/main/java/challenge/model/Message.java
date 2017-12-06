@@ -1,29 +1,40 @@
 package challenge.model;
 
-import javax.validation.constraints.NotNull;
-import java.beans.ConstructorProperties;
 
-
-        //Message extends ResourceSupport
+//Message extends ResourceSupport
 public class Message {
 
-    private String text;
-    @NotNull
-    private int userID;
+    private int Id;
+    private int authorId;
+    private String content;
 
-    public int getUserID(){
-        return this.userID;
+    public Message(int id, int authorId, String content) {
+        Id = id;
+        this.authorId = authorId;
+        this.content = content;
     }
 
-    public String getText(){
-        return this.text;
+    public int getId() {
+        return Id;
     }
 
-    public void setText(String text){
-        this.text = text;
+    public void setId(int id) {
+        Id = id;
     }
 
-    public void setUserID(int id){
-        this.userID = id;
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int author_id) {
+        this.authorId = author_id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

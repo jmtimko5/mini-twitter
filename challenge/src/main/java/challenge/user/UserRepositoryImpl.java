@@ -25,11 +25,11 @@ public class UserRepositoryImpl implements UserRepository{
 //    }
 
     @Override
-    public User getIdForUser(String username) {
+    public User getUserByHandle(String handle) {
 
         String query = "select * from PEOPLE where handle = :handle";
 
-        SqlParameterSource namedParameters = new MapSqlParameterSource("handle", "batman");
+        SqlParameterSource namedParameters = new MapSqlParameterSource("handle", handle);
 
         return (User) namedParameterJdbcTemplate.queryForObject(query,
                 namedParameters, new RowMapper() {

@@ -14,10 +14,6 @@ import java.util.List;
 @RequestMapping(value = "/api/v1")
 public class MessagesController {
 
-//    public static final String API_BASE = "/api/v1";
-
-//    public ResponseEntity getMessagesForUser(){
-
     @Autowired
     private MessagesService messagesService;
 

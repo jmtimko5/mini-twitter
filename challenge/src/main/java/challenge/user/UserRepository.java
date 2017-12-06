@@ -4,5 +4,5 @@ import challenge.model.User;
 
 public interface UserRepository {
 
-    User getIdForUser(String username);
+    User getUserByHandle(String username);
 }
