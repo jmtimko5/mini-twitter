@@ -85,4 +85,30 @@ public class UserRepositoryImpl implements UserRepository{
                         return getUserById(resultSet.getInt("FOLLOWER_PERSON_ID"));
                     }});
     }
+
+    @Override
+    public User followUser(int id, int idToFollow) {
+
+        String sql = "INSERT INTO FOLLOWERS (PERSON_ID, FOLLOWER_PERSON_ID) VALUES (:person_id, :follower_person_id)";
+        String sqlCheck = "select count(*) from FOLLOWERS where PERSON_ID = :person_id AND FOLLOWER_PERSON_ID = :follower_person_id";
+        String sqlValidate = "select * from FOLLOWERS where PERSON_ID = :person_id and FOLLOWER_PERSON_ID = :follower_person_id";
+
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("person_id", idToFollow)
+                .addValue("follower_person_id", id);
+
+        boolean exists =  this.namedParameterJdbcTemplate.queryForObject(sqlCheck, namedParameters, Integer.class) > 0;
+
+        if(!exists){
+            namedParameterJdbcTemplate.update(sql, namedParameters);
+        }
+
+        return (User) namedParameterJdbcTemplate.queryForObject(sqlValidate,
+                namedParameters, new RowMapper() {
+                    public Object mapRow(ResultSet resultSet, int rowNum)
+                            throws SQLException {
+                        return getUserById(resultSet.getInt("PERSON_ID"));
+                    }
+                });
+    }
 }

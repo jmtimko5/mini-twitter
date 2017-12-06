@@ -59,7 +59,7 @@ public class UserController {
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
 
-        User result = userService.(handle2);
+        User result = userService.followUser(handle, idToFollow, handleToFollow);
 
         return new ResponseEntity<User>(result, HttpStatus.OK);
 
