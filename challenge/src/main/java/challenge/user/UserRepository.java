@@ -11,4 +11,6 @@ public interface UserRepository {
     User getUserById(int id);
 
     List<User> getAllFollowingForUser(int id);
+
+    List<User> getAllFollowersForUser(int id);
 }

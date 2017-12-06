@@ -71,4 +71,18 @@ public class UserRepositoryImpl implements UserRepository{
                         return getUserById(resultSet.getInt("PERSON_ID"));
                     }});
     }
+
+    @Override
+    public List<User> getAllFollowersForUser(int id) {
+        String query = "select * from FOLLOWERS where person_id = :person_id";
+
+        SqlParameterSource namedParameters = new MapSqlParameterSource("person_id", id);
+
+        return (List<User>) namedParameterJdbcTemplate.query(query,
+                namedParameters, new RowMapper() {
+                    public Object mapRow(ResultSet resultSet, int rowNum)
+                            throws SQLException {
+                        return getUserById(resultSet.getInt("FOLLOWER_PERSON_ID"));
+                    }});
+    }
 }

@@ -30,4 +30,16 @@ public class UserController {
         return new ResponseEntity<List<User>>(result, HttpStatus.OK);
 
     }
+
+    @RequestMapping(value = "/followers", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getFollowersForUser(@RequestHeader("Authorization") String authHeader){
+
+        String encodedCredentials = authHeader.split(" ")[1];
+        String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        List<User> result = userService.getAllFollowersForUser(handle);
+
+        return new ResponseEntity<List<User>>(result, HttpStatus.OK);
+
+    }
 }

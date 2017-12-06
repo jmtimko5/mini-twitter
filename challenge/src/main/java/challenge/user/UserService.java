@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UserService {
     List<User> getAllFollowingForUser(String handle);
+
+    List<User> getAllFollowersForUser(String handle);
 }

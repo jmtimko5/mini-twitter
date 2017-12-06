@@ -17,4 +17,10 @@ public class UserServiceImpl implements UserService{
         User tweeter = userRepository.getUserByHandle(handle);
         return userRepository.getAllFollowingForUser(tweeter.getId());
     }
+
+    @Override
+    public List<User> getAllFollowersForUser(String handle) {
+        User tweeter = userRepository.getUserByHandle(handle);
+        return userRepository.getAllFollowersForUser(tweeter.getId());
+    }
 }
