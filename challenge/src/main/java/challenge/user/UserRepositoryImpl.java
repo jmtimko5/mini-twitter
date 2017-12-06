@@ -89,7 +89,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public User followUser(int id, int idToFollow) {
 
-        String sql = "INSERT INTO FOLLOWERS (PERSON_ID, FOLLOWER_PERSON_ID) VALUES (:person_id, :follower_person_id)";
+        String sql = "insert into FOLLOWERS (PERSON_ID, FOLLOWER_PERSON_ID) values (:person_id, :follower_person_id)";
         String sqlCheck = "select count(*) from FOLLOWERS where PERSON_ID = :person_id AND FOLLOWER_PERSON_ID = :follower_person_id";
         String sqlValidate = "select * from FOLLOWERS where PERSON_ID = :person_id and FOLLOWER_PERSON_ID = :follower_person_id";
 
@@ -110,5 +110,30 @@ public class UserRepositoryImpl implements UserRepository{
                         return getUserById(resultSet.getInt("PERSON_ID"));
                     }
                 });
+    }
+
+    @Override
+    public User unfollowUser(int id, int idToUnfollow) throws SQLException {
+        String sql = "delete from FOLLOWERS where PERSON_ID = :person_id and FOLLOWER_PERSON_ID = :follower_person_id";
+        String sqlCheck = "select count(*) from FOLLOWERS where PERSON_ID = :person_id AND FOLLOWER_PERSON_ID = :follower_person_id";
+
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("person_id", idToUnfollow)
+                .addValue("follower_person_id", id);
+
+        boolean exists =  this.namedParameterJdbcTemplate.queryForObject(sqlCheck, namedParameters, Integer.class) > 0;
+
+        if(exists){
+            namedParameterJdbcTemplate.update(sql, namedParameters);
+        }
+
+        exists =  this.namedParameterJdbcTemplate.queryForObject(sqlCheck, namedParameters, Integer.class) > 0;
+
+        if(!exists){
+            return getUserById(idToUnfollow);
+        } else{
+            //TODO throw exception bad delete
+            throw new SQLException(String.format("Delete of ID:%d following ID:%d failed", id, idToUnfollow));
+        }
     }
 }

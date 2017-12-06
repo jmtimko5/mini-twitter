@@ -2,6 +2,7 @@ package challenge.user;
 
 import challenge.model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface UserRepository {
@@ -15,4 +16,6 @@ public interface UserRepository {
     List<User> getAllFollowersForUser(int id);
 
     User followUser(int id, int idToFollow);
+
+    User unfollowUser(int id, int idToUnfollow) throws SQLException;
 }
