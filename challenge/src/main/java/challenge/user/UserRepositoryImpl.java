@@ -1,30 +1,42 @@
 package challenge.user;
 
+import challenge.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
 
     @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+
+//
+//    @Autowired
+//    public void setDataSource(DataSource dataSource) {
+//        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+//    }
 
     @Override
-    public int getIdForUser(String username) {
+    public User getIdForUser(String username) {
 
-        String sql = "select count(*) from T_ACTOR where first_name = :firstName and last_name = :lastName";
+        String query = "select * from PEOPLE where handle = :handle";
 
-//        SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(exampleActor);
-//
-//        return this.namedParameterJdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
-        return 0;
+        SqlParameterSource namedParameters = new MapSqlParameterSource("handle", "batman");
+
+        return (User) namedParameterJdbcTemplate.queryForObject(query,
+                namedParameters, new RowMapper() {
+                    public Object mapRow(ResultSet resultSet, int rowNum)
+                            throws SQLException {
+                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"));
+                    }
+                });
     }
 }

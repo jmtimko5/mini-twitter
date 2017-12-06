@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import java.util.Base64;
 
 import java.util.List;
 
@@ -22,10 +23,12 @@ public class MessagesController {
 
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getMessagesForUser(){
-        String user = "";
-        System.out.println("WE GOT HERE");
-        List<Message> result = messagesService.getAllMessagesForUser(user);
+    public ResponseEntity<List<Message>> getMessagesForUser(@RequestHeader("Authorization") String authHeader){
+
+        String encodedCredentials = authHeader.split(" ")[1];
+        String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        List<Message> result = messagesService.getAllMessagesForUser(handle);
 
         return new ResponseEntity<List<Message>>(result, HttpStatus.OK);
 

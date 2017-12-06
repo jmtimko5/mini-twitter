@@ -1,6 +1,8 @@
 package challenge.user;
 
+import challenge.model.User;
+
 public interface UserRepository {
 
-    int getIdForUser(String username);
+    User getIdForUser(String username);
 }
