@@ -27,7 +27,7 @@ public class MessagesRepositoryImpl implements MessagesRepository{
 
 
     @Override
-    public List<Message> getAllMessagesForUser(int id) {
+    public List<Message> getMessagesForUser(int id) {
         String query = "select * from MESSAGES where person_id = :person_id";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource("person_id", id);

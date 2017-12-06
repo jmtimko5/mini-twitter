@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MessagesRepository {
 
-    List<Message> getAllMessagesForUser(int id);
+    List<Message> getMessagesForUser(int id);
 }
