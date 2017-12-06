@@ -6,13 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Base64;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/network")
 public class UserController {
 
     @Autowired
@@ -41,5 +44,31 @@ public class UserController {
 
         return new ResponseEntity<List<User>>(result, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "/follow", method = RequestMethod.POST)
+    public ResponseEntity<User> followUser(@RequestHeader("Authorization") String authHeader,
+                                                 @RequestParam(value = "id", required=false) Integer idToFollow,
+                                                 @RequestParam(value = "handle", required=false) String handleToFollow){
+
+
+        if (idToFollow == null && (handleToFollow == null || handleToFollow.isEmpty())) {
+            throw new IllegalArgumentException("Please pass either a user id or handle to follow.");
+        }
+
+        String encodedCredentials = authHeader.split(" ")[1];
+        String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        User result = userService.(handle2);
+
+        return new ResponseEntity<User>(result, HttpStatus.OK);
+
+    }
+
+
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    void handleBadRequests(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 }
