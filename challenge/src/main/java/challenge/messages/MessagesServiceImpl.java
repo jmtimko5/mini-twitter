@@ -6,7 +6,9 @@ import challenge.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MessagesServiceImpl implements MessagesService{
@@ -19,7 +21,7 @@ public class MessagesServiceImpl implements MessagesService{
 
 
     @Override
-    public List<Message> getAllMessagesForUser(String handle) {
+    public List<Message> getAllMessagesForUser(String handle, String[] keywords) {
 
         //TODO: implement exception handling here
 //        if(user == null) {
@@ -28,6 +30,15 @@ public class MessagesServiceImpl implements MessagesService{
 
         User tweeter = userRepository.getUserByHandle(handle);
 
-        return messagesRepository.getAllMessagesForUser(tweeter.getId());
+        List<Message> userMessages =  messagesRepository.getAllMessagesForUser(tweeter.getId());
+
+        if (keywords == null || keywords.length == 0){
+            return userMessages;
+        } else {
+            return userMessages.stream()
+                    .filter(message -> Arrays.stream(keywords)
+                            .anyMatch(word -> message.containsKeyword(word)))
+                            .collect(Collectors.toList());
+        }
     }
 }

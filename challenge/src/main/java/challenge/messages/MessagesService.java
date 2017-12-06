@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MessagesService {
 
-    List<Message> getAllMessagesForUser(String user);
+    List<Message> getAllMessagesForUser(String user, String[] keywords);
 
 }

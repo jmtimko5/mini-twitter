@@ -37,4 +37,8 @@ public class Message {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public boolean containsKeyword(String word){
+        return this.content.contains(word);
+    }
 }
