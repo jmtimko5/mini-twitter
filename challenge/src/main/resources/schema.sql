@@ -6,7 +6,8 @@ DROP TABLE IF EXISTS followers;
 CREATE TABLE people (
     id IDENTITY,
     handle VARCHAR,
-    name VARCHAR
+    name VARCHAR,
+    password VARCHAR,
 );
 
 CREATE TABLE messages (

@@ -2,38 +2,49 @@ package challenge.model;
 
 public class User {
 
-    private int Id;
-    private String Handle;
-    private String Name;
+    private int id;
+    private String handle;
+    private String name;
+    private String password;
 
-    public User(int id, String handle, String name) {
-        Id = id;
-        Handle = handle;
-        Name = name;
+    public User(int id, String handle, String name, String password) {
+        this.id = id;
+        this.handle = handle;
+        this.name = name;
+        this.password = password;
+
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getHandle() {
-        return Handle;
+        return handle;
     }
 
     public void setHandle(String handle) {
-        Handle = handle;
+        this.handle = handle;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -52,5 +63,6 @@ public class User {
     public int hashCode() {
         return getHandle().hashCode();
     }
+
 
 }

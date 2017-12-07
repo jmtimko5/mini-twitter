@@ -1,16 +1,30 @@
 -- People
-INSERT INTO people (id, handle, name)
+--INSERT INTO people (id, handle, name)
+--VALUES
+--    (1, 'batman', 'Bruce Wayne'),
+--    (2, 'superman', 'Clark Kent'),
+--    (3, 'catwoman', 'Selina Kyle'),
+--    (4, 'daredevil', 'Matt Murdock'),
+--    (5, 'alfred', 'Alfred Pennyworth'),
+--    (6, 'dococ', 'Otto Octavius'),
+--    (7, 'zod', 'Dru-Zod'),
+--    (8, 'spiderman', 'Peter Parker'),
+--    (9, 'ironman', 'Tony Stark'),
+--    (10, 'profx', 'Charles Xavier');
+
+--TEST WITH PASSWORD
+INSERT INTO people (id, handle, name, password)
 VALUES
-    (1, 'batman', 'Bruce Wayne'),
-    (2, 'superman', 'Clark Kent'),
-    (3, 'catwoman', 'Selina Kyle'),
-    (4, 'daredevil', 'Matt Murdock'),
-    (5, 'alfred', 'Alfred Pennyworth'),
-    (6, 'dococ', 'Otto Octavius'),
-    (7, 'zod', 'Dru-Zod'),
-    (8, 'spiderman', 'Peter Parker'),
-    (9, 'ironman', 'Tony Stark'),
-    (10, 'profx', 'Charles Xavier');
+    (1, 'batman', 'Bruce Wayne', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (2, 'superman', 'Clark Kent', 'abc123'),
+    (3, 'catwoman', 'Selina Kyle', 'abc123'),
+    (4, 'daredevil', 'Matt Murdock', 'abc123'),
+    (5, 'alfred', 'Alfred Pennyworth', 'abc123'),
+    (6, 'dococ', 'Otto Octavius', 'abc123'),
+    (7, 'zod', 'Dru-Zod', 'abc123'),
+    (8, 'spiderman', 'Peter Parker', 'abc123'),
+    (9, 'ironman', 'Tony Stark', 'abc123'),
+    (10, 'profx', 'Charles Xavier', 'abc123');
 
 -- Messages
 INSERT INTO messages (person_id, content)

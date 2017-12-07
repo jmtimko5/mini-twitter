@@ -9,10 +9,16 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.Resource;
 
 //import javax.naming.Context;
 //@WebAppConfiguration
@@ -22,18 +28,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static String REALM="MY_TEST_REALM";
 
+//    @Resource(name = "userDetailService")
+//    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserDetailServiceImpl userDetailsService;
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("batman").password("abc123").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("tom").password("abc123").roles("USER");
+//        auth.inMemoryAuthentication().withUser("batman").password("abc123").roles("ADMIN");
+//        auth.inMemoryAuthentication().withUser("tom").password("abc123").roles("USER");
+
+
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
+        auth.authenticationProvider(authenticationProvider());
+
+
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers("/h2-console/*").permitAll()
-//                .antMatchers("/api/v1/*").permitAll()
             .anyRequest()
             .authenticated()
             .and()
@@ -46,10 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requiresSecure();
 
 
-
-//        http.addFilterAfter(new CustomFilter(),
-//                BasicAuthenticationFilter.class);
-
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
@@ -59,32 +73,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new CustomBasicAuthenticationEntryPoint();
     }
 
-//    @Bean
-//    public EmbeddedServletContainerFactory servletContainer() {
-//        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
-//            @Override
-//            protected void postProcessContext(Context context) {
-//                SecurityConstraint securityConstraint = new SecurityConstraint();
-//                securityConstraint.setUserConstraint("CONFIDENTIAL");
-//                SecurityCollection collection = new SecurityCollection();
-//                collection.addPattern("/*");
-//                securityConstraint.addCollection(collection);
-//                context.addConstraint(securityConstraint);
-//            }
-//        };
-//
-//        tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
-//        return tomcat;
-//    }
-//
-//    private Connector initiateHttpConnector() {
-//        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-//        connector.setScheme("http");
-//        connector.setPort(8080);
-//        connector.setSecure(false);
-//        connector.setRedirectPort(8443);
-//
-//        return connector;
-//    }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider
+                = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+//    @Bean
+//    UserDetailsService createUserDetailsService(){
+//        return new UserDetailServiceImpl();
+//    }
 }

@@ -1,8 +1,9 @@
 package challenge.user;
-import challenge.messages.MessagesService;
-import challenge.model.Message;
 import challenge.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getFollowingForUser(@RequestHeader("Authorization") String authHeader){
@@ -90,7 +92,7 @@ public class UserController {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
-        
+
         Integer result = userService.getShortestPathBetweenUsers(handle, handleToSearch);
 
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
@@ -99,7 +101,7 @@ public class UserController {
 
 
 
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler({IllegalArgumentException.class, UsernameNotFoundException.class})
     void handleBadRequests(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }

@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository{
                 namedParameters, new RowMapper() {
                     public Object mapRow(ResultSet resultSet, int rowNum)
                             throws SQLException {
-                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"));
+                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"), resultSet.getString("PASSWORD"));
                     }
                 });
     }
@@ -53,7 +53,7 @@ public class UserRepositoryImpl implements UserRepository{
                 namedParameters, new RowMapper() {
                     public Object mapRow(ResultSet resultSet, int rowNum)
                             throws SQLException {
-                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"));
+                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"), resultSet.getString("PASSWORD"));
                     }
                 });
     }
@@ -144,7 +144,7 @@ public class UserRepositoryImpl implements UserRepository{
         return (List<User>) namedParameterJdbcTemplate.query(sql, new RowMapper() {
                     public Object mapRow(ResultSet resultSet, int rowNum)
                             throws SQLException {
-                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"));
+                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"), resultSet.getString("PASSWORD"));
                     }
                 });
 
