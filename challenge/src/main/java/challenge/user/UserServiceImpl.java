@@ -84,33 +84,37 @@ public class UserServiceImpl implements UserService{
 
         //TODO: fix this condition
         while(!forwardQueue.isEmpty() || !backwardQueue.isEmpty()){
-            User currentForward = forwardQueue.remove();
-            User currentBackward = backwardQueue.remove();
+            if(!forwardQueue.isEmpty()){
+                User currentForward = forwardQueue.remove();
+                List<User> forwardChildren = getAllFollowingForUser(currentForward.getHandle());
 
-            List<User> forwardChildren = getAllFollowingForUser(currentForward.getHandle());
-            List<User> backwardChildren = getAllFollowersForUser(currentBackward.getHandle());
+                for(User u : forwardChildren){
+                    Integer currentDist = forwardDistance.get(u);
+                    if (currentDist == Integer.MAX_VALUE){
+                        forwardDistance.put(u, forwardDistance.get(currentForward) + 1);
+                        forwardQueue.add(u);
+                    }
 
-            for(User u : forwardChildren){
-                Integer currentDist = forwardDistance.get(u);
-                if (currentDist == Integer.MAX_VALUE){
-                    forwardDistance.put(u, forwardDistance.get(currentForward) + 1);
-                    forwardQueue.add(u);
-                }
-
-                if(backwardDistance.get(u) != Integer.MAX_VALUE){
-                    return backwardDistance.get(u) + forwardDistance.get(u);
+                    if(backwardDistance.get(u) != Integer.MAX_VALUE){
+                        return backwardDistance.get(u) + forwardDistance.get(u);
+                    }
                 }
             }
 
-            for(User u : backwardChildren){
-                Integer currentDist = backwardDistance.get(u);
-                if (currentDist == Integer.MAX_VALUE){
-                    backwardDistance.put(u, backwardDistance.get(currentBackward) + 1);
-                    backwardQueue.add(u);
-                }
+            if(!backwardQueue.isEmpty()){
+                User currentBackward = backwardQueue.remove();
+                List<User> backwardChildren = getAllFollowersForUser(currentBackward.getHandle());
 
-                if(forwardDistance.get(u) != Integer.MAX_VALUE){
-                    return backwardDistance.get(u) + forwardDistance.get(u);
+                for(User u : backwardChildren){
+                    Integer currentDist = backwardDistance.get(u);
+                    if (currentDist == Integer.MAX_VALUE){
+                        backwardDistance.put(u, backwardDistance.get(currentBackward) + 1);
+                        backwardQueue.add(u);
+                    }
+
+                    if(forwardDistance.get(u) != Integer.MAX_VALUE){
+                        return backwardDistance.get(u) + forwardDistance.get(u);
+                    }
                 }
             }
         }

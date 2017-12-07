@@ -147,14 +147,7 @@ public class UserRepositoryImpl implements UserRepository{
                         return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"));
                     }
                 });
-//
-// .queryForObject(sql,
-//                namedParameters, new RowMapper() {
-//                    public Object mapRow(ResultSet resultSet, int rowNum)
-//                            throws SQLException {
-//                        return getUserById(resultSet.getInt("PERSON_ID"));
-//                    }
-//                });
+
 
     }
 }
