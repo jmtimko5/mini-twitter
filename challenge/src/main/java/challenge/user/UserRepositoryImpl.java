@@ -136,4 +136,25 @@ public class UserRepositoryImpl implements UserRepository{
             throw new SQLException(String.format("Delete of ID:%d following ID:%d failed", id, idToUnfollow));
         }
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        String sql = "select * from PEOPLE";
+
+        return (List<User>) namedParameterJdbcTemplate.query(sql, new RowMapper() {
+                    public Object mapRow(ResultSet resultSet, int rowNum)
+                            throws SQLException {
+                        return new User(resultSet.getInt("ID"), resultSet.getString("HANDLE"), resultSet.getString("NAME"));
+                    }
+                });
+//
+// .queryForObject(sql,
+//                namedParameters, new RowMapper() {
+//                    public Object mapRow(ResultSet resultSet, int rowNum)
+//                            throws SQLException {
+//                        return getUserById(resultSet.getInt("PERSON_ID"));
+//                    }
+//                });
+
+    }
 }

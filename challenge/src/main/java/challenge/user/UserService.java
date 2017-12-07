@@ -13,4 +13,6 @@ public interface UserService {
     User followUser(String handle, Integer idToFollow, String handleToFollow);
 
     User unfollowUser(String handle, Integer idToUnfollow, String handleToUnfollow) throws SQLException;
+
+    Integer getShortestPathBetweenUsers(String handle, String handleToSearch);
 }

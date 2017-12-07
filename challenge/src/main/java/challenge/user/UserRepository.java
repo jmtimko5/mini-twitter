@@ -18,4 +18,6 @@ public interface UserRepository {
     User followUser(int id, int idToFollow);
 
     User unfollowUser(int id, int idToUnfollow) throws SQLException;
+
+    List<User> getAllUsers();
 }
