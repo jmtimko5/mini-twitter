@@ -1,5 +1,8 @@
 package challenge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 
     private int id;
@@ -39,6 +42,8 @@ public class User {
         this.name = name;
     }
 
+    @JsonIgnore
+    @JsonProperty(value = "password")
     public String getPassword() {
         return password;
     }
