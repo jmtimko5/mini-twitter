@@ -30,7 +30,7 @@ This project is a small RESTful backend mimicking the behavior of Twitter.  All 
 | handle    | String | User handle of user to unfollow            | no       |
 
 * ```/network/shortestpath/{handleToSearch}```
-  * GET: Get the length of the shortest follow graph path between your user and the user with the handle ```handleToSearch```.  Return the length of the path or ```-1``` if not path exists.
+  * GET: Get the length of the shortest follow graph path between your user and the user with the handle ```handleToSearch``` via the users you follow.  Return the length of the path or ```-1``` if not path exists.
 
 
 
