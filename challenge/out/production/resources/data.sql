@@ -16,15 +16,15 @@
 INSERT INTO people (id, handle, name, password)
 VALUES
     (1, 'batman', 'Bruce Wayne', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
-    (2, 'superman', 'Clark Kent', 'abc123'),
-    (3, 'catwoman', 'Selina Kyle', 'abc123'),
-    (4, 'daredevil', 'Matt Murdock', 'abc123'),
-    (5, 'alfred', 'Alfred Pennyworth', 'abc123'),
-    (6, 'dococ', 'Otto Octavius', 'abc123'),
-    (7, 'zod', 'Dru-Zod', 'abc123'),
-    (8, 'spiderman', 'Peter Parker', 'abc123'),
-    (9, 'ironman', 'Tony Stark', 'abc123'),
-    (10, 'profx', 'Charles Xavier', 'abc123');
+    (2, 'superman', 'Clark Kent', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (3, 'catwoman', 'Selina Kyle', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (4, 'daredevil', 'Matt Murdock', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (5, 'alfred', 'Alfred Pennyworth', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (6, 'dococ', 'Otto Octavius', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (7, 'zod', 'Dru-Zod', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (8, 'spiderman', 'Peter Parker', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (9, 'ironman', 'Tony Stark', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK'),
+    (10, 'profx', 'Charles Xavier', '$2a$04$f1GghLJV3DVjB9P627f8XO3nFw8FussNzi/MW8ilp5.xm3WWlq8tK');
 
 -- Messages
 INSERT INTO messages (person_id, content)

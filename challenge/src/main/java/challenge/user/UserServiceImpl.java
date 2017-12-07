@@ -1,5 +1,7 @@
 package challenge.user;
 
+import challenge.exceptions.DataQueryException;
+import challenge.exceptions.ObjectNotFoundException;
 import challenge.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +16,19 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     @Override
-    public List<User> getAllFollowingForUser(String handle) {
+    public List<User> getAllFollowingForUser(String handle) throws DataQueryException {
         User tweeter = userRepository.getUserByHandle(handle);
         return userRepository.getAllFollowingForUser(tweeter.getId());
     }
 
     @Override
-    public List<User> getAllFollowersForUser(String handle) {
+    public List<User> getAllFollowersForUser(String handle) throws DataQueryException {
         User tweeter = userRepository.getUserByHandle(handle);
         return userRepository.getAllFollowersForUser(tweeter.getId());
     }
 
     @Override
-    public User followUser(String handle, Integer idToFollow, String handleToFollow) {
+    public User followUser(String handle, Integer idToFollow, String handleToFollow) throws DataQueryException, ObjectNotFoundException {
         User tweeter = userRepository.getUserByHandle(handle);
 
         User toFollow;
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User unfollowUser(String handle, Integer idToUnfollow, String handleToUnfollow) throws SQLException {
+    public User unfollowUser(String handle, Integer idToUnfollow, String handleToUnfollow) throws DataQueryException {
         User tweeter = userRepository.getUserByHandle(handle);
 
         User toUnfollow;
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Integer getShortestPathBetweenUsers(String handle, String handleToSearch) {
+    public Integer getShortestPathBetweenUsers(String handle, String handleToSearch) throws DataQueryException {
         User forward = userRepository.getUserByHandle(handle);
         User backward = userRepository.getUserByHandle(handleToSearch);
 
@@ -118,7 +120,7 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    private List<User> getAllUsers(){
+    private List<User> getAllUsers() throws DataQueryException {
         return userRepository.getAllUsers();
     }
 }

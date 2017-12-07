@@ -1,5 +1,6 @@
 package challenge.messages;
 
+import challenge.exceptions.DataQueryException;
 import challenge.model.Message;
 import challenge.model.User;
 import challenge.user.UserRepository;
@@ -23,7 +24,7 @@ public class MessagesServiceImpl implements MessagesService{
 
 
     @Override
-    public List<Message> getAllMessagesForUser(String handle, String[] keywords) {
+    public List<Message> getAllMessagesForUser(String handle, String[] keywords) throws DataQueryException {
 
         List<Message> userMessages = getMessagesForUser(handle, keywords);
         List<Message> followingMessages = getMessagesForUserFollowing(handle, keywords);
@@ -33,7 +34,7 @@ public class MessagesServiceImpl implements MessagesService{
     }
 
     @Override
-    public List<Message> getMessagesForUser(String handle, String[] keywords) {
+    public List<Message> getMessagesForUser(String handle, String[] keywords) throws DataQueryException {
 
         User tweeter = userRepository.getUserByHandle(handle);
 
@@ -43,7 +44,7 @@ public class MessagesServiceImpl implements MessagesService{
     }
 
     @Override
-    public List<Message> getMessagesForUserFollowing(String handle, String[] keywords) {
+    public List<Message> getMessagesForUserFollowing(String handle, String[] keywords) throws DataQueryException {
 
         User tweeter = userRepository.getUserByHandle(handle);
 

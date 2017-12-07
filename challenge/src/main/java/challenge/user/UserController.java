@@ -1,4 +1,6 @@
 package challenge.user;
+import challenge.exceptions.DataQueryException;
+import challenge.exceptions.ObjectNotFoundException;
 import challenge.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,12 @@ public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getFollowingForUser(@RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<List<User>> getFollowingForUser(@RequestHeader("Authorization") String authHeader) throws DataQueryException {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        logger.info(String.format("Received request to find following for user: %s", handle));
 
         List<User> result = userService.getAllFollowingForUser(handle);
 
@@ -38,10 +42,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/followers", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getFollowersForUser(@RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<List<User>> getFollowersForUser(@RequestHeader("Authorization") String authHeader) throws DataQueryException {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        logger.info(String.format("Received request to find followers for user: %s", handle));
 
         List<User> result = userService.getAllFollowersForUser(handle);
 
@@ -52,7 +58,7 @@ public class UserController {
     @RequestMapping(value = "/follow", method = RequestMethod.POST)
     public ResponseEntity<User> followUser(@RequestHeader("Authorization") String authHeader,
                                                  @RequestParam(value = "id", required=false) Integer idToFollow,
-                                                 @RequestParam(value = "handle", required=false) String handleToFollow){
+                                                 @RequestParam(value = "handle", required=false) String handleToFollow) throws ObjectNotFoundException, DataQueryException {
 
 
         if (idToFollow == null && (handleToFollow == null || handleToFollow.isEmpty())) {
@@ -61,6 +67,8 @@ public class UserController {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        logger.info(String.format("Received request to follow user: %s from user: %s", handleToFollow, handle));
 
         User result = userService.followUser(handle, idToFollow, handleToFollow);
 
@@ -71,7 +79,7 @@ public class UserController {
     @RequestMapping(value = "/unfollow", method = RequestMethod.POST)
     public ResponseEntity<User> unfollowUser(@RequestHeader("Authorization") String authHeader,
                                            @RequestParam(value = "id", required=false) Integer idToUnfollow,
-                                           @RequestParam(value = "handle", required=false) String handleToUnfollow) throws SQLException {
+                                           @RequestParam(value = "handle", required=false) String handleToUnfollow) throws DataQueryException  {
 
 
         if (idToUnfollow == null && (handleToUnfollow == null || handleToUnfollow.isEmpty())) {
@@ -81,6 +89,9 @@ public class UserController {
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
 
+        logger.info(String.format("Received request to unfollow user: %s from user: %s", handleToUnfollow, handle));
+
+
         User result = userService.unfollowUser(handle, idToUnfollow, handleToUnfollow);
 
         return new ResponseEntity<User>(result, HttpStatus.OK);
@@ -88,10 +99,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/shortestpath/{handleToSearch}", method = RequestMethod.GET)
-    public ResponseEntity<Integer> getShortestPathToUser(@RequestHeader("Authorization") String authHeader, @PathVariable String handleToSearch){
+    public ResponseEntity<Integer> getShortestPathToUser(@RequestHeader("Authorization") String authHeader, @PathVariable String handleToSearch) throws DataQueryException {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
+
+        logger.info(String.format("Received request to find shortest path to user: %s from user: %s", handleToSearch, handle));
 
         Integer result = userService.getShortestPathBetweenUsers(handle, handleToSearch);
 
@@ -106,7 +119,7 @@ public class UserController {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
-    @ExceptionHandler({SQLException.class})
+    @ExceptionHandler({DataQueryException.class, ObjectNotFoundException.class})
     void handleSQLFailures(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
