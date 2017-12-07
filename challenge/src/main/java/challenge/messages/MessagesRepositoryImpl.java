@@ -19,12 +19,6 @@ public class MessagesRepositoryImpl implements MessagesRepository{
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-//
-//    @Autowired
-//    public void setDataSource(DataSource dataSource) {
-//        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-//    }
-
 
     @Override
     public List<Message> getMessagesForUser(int id) {

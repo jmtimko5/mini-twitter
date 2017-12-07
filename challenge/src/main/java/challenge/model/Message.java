@@ -1,7 +1,5 @@
 package challenge.model;
 
-
-//Message extends ResourceSupport
 public class Message {
 
     private int Id;
