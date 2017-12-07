@@ -16,20 +16,34 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     @Override
-    public List<User> getAllFollowingForUser(String handle) throws DataQueryException {
+    public List<User> getAllFollowingForUser(String handle) throws DataQueryException, ObjectNotFoundException {
         User tweeter = userRepository.getUserByHandle(handle);
+
+        if(tweeter == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
+
         return userRepository.getAllFollowingForUser(tweeter.getId());
     }
 
     @Override
-    public List<User> getAllFollowersForUser(String handle) throws DataQueryException {
+    public List<User> getAllFollowersForUser(String handle) throws DataQueryException, ObjectNotFoundException {
         User tweeter = userRepository.getUserByHandle(handle);
+
+        if(tweeter == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
+
         return userRepository.getAllFollowersForUser(tweeter.getId());
     }
 
     @Override
     public User followUser(String handle, Integer idToFollow, String handleToFollow) throws DataQueryException, ObjectNotFoundException {
         User tweeter = userRepository.getUserByHandle(handle);
+
+        if(tweeter == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
 
         User toFollow;
         if(idToFollow == null){
@@ -38,14 +52,22 @@ public class UserServiceImpl implements UserService{
             toFollow = userRepository.getUserById(idToFollow);
         }
 
+        if(toFollow == null){
+            throw new ObjectNotFoundException(String.format("User %s or id %d not found", handleToFollow, idToFollow));
+        }
+
         return userRepository.followUser(tweeter.getId(), toFollow.getId());
 
 
     }
 
     @Override
-    public User unfollowUser(String handle, Integer idToUnfollow, String handleToUnfollow) throws DataQueryException {
+    public User unfollowUser(String handle, Integer idToUnfollow, String handleToUnfollow) throws DataQueryException, ObjectNotFoundException {
         User tweeter = userRepository.getUserByHandle(handle);
+
+        if(tweeter == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
 
         User toUnfollow;
         if(idToUnfollow == null){
@@ -54,13 +76,25 @@ public class UserServiceImpl implements UserService{
             toUnfollow = userRepository.getUserById(idToUnfollow);
         }
 
+        if(toUnfollow == null){
+            throw new ObjectNotFoundException(String.format("User %s or id %d not found", handleToUnfollow, idToUnfollow));
+        }
+
         return userRepository.unfollowUser(tweeter.getId(), toUnfollow.getId());
     }
 
     @Override
-    public Integer getShortestPathBetweenUsers(String handle, String handleToSearch) throws DataQueryException {
+    public Integer getShortestPathBetweenUsers(String handle, String handleToSearch) throws DataQueryException, ObjectNotFoundException {
         User forward = userRepository.getUserByHandle(handle);
         User backward = userRepository.getUserByHandle(handleToSearch);
+
+        if(forward == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
+
+        if(backward == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handleToSearch));
+        }
 
         List<User> allUsers = getAllUsers();
 

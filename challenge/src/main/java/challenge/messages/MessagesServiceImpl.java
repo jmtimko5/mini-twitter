@@ -1,6 +1,7 @@
 package challenge.messages;
 
 import challenge.exceptions.DataQueryException;
+import challenge.exceptions.ObjectNotFoundException;
 import challenge.model.Message;
 import challenge.model.User;
 import challenge.user.UserRepository;
@@ -24,7 +25,7 @@ public class MessagesServiceImpl implements MessagesService{
 
 
     @Override
-    public List<Message> getAllMessagesForUser(String handle, String[] keywords) throws DataQueryException {
+    public List<Message> getAllMessagesForUser(String handle, String[] keywords) throws DataQueryException, ObjectNotFoundException {
 
         List<Message> userMessages = getMessagesForUser(handle, keywords);
         List<Message> followingMessages = getMessagesForUserFollowing(handle, keywords);
@@ -34,9 +35,13 @@ public class MessagesServiceImpl implements MessagesService{
     }
 
     @Override
-    public List<Message> getMessagesForUser(String handle, String[] keywords) throws DataQueryException {
+    public List<Message> getMessagesForUser(String handle, String[] keywords) throws DataQueryException, ObjectNotFoundException {
 
         User tweeter = userRepository.getUserByHandle(handle);
+
+        if(tweeter == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
 
         List<Message> userMessages =  messagesRepository.getMessagesForUser(tweeter.getId());
 
@@ -44,9 +49,13 @@ public class MessagesServiceImpl implements MessagesService{
     }
 
     @Override
-    public List<Message> getMessagesForUserFollowing(String handle, String[] keywords) throws DataQueryException {
+    public List<Message> getMessagesForUserFollowing(String handle, String[] keywords) throws DataQueryException, ObjectNotFoundException {
 
         User tweeter = userRepository.getUserByHandle(handle);
+
+        if(tweeter == null){
+            throw new ObjectNotFoundException(String.format("User %s not found", handle));
+        }
 
         List<User> following = userRepository.getAllFollowingForUser(tweeter.getId());
         List<Message> followingMessages = new ArrayList<Message>();

@@ -1,6 +1,7 @@
 package challenge.messages;
 
 import challenge.exceptions.DataQueryException;
+import challenge.exceptions.ObjectNotFoundException;
 import challenge.model.Message;
 import challenge.user.UserController;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class MessagesController {
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessagesForUser(@RequestHeader("Authorization") String authHeader,
-                                                            @RequestParam(value="search", required = false) String[] keywords) throws DataQueryException {
+                                                            @RequestParam(value="search", required = false) String[] keywords) throws DataQueryException, ObjectNotFoundException {
 
 
         String encodedCredentials = authHeader.split(" ")[1];
@@ -42,7 +43,7 @@ public class MessagesController {
 
     }
 
-    @ExceptionHandler({DataQueryException.class})
+    @ExceptionHandler({DataQueryException.class, ObjectNotFoundException.class})
     void handleSQLFailures(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }

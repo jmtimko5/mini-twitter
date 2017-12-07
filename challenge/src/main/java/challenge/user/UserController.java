@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Base64;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getFollowingForUser(@RequestHeader("Authorization") String authHeader) throws DataQueryException {
+    public ResponseEntity<List<User>> getFollowingForUser(@RequestHeader("Authorization") String authHeader) throws DataQueryException, ObjectNotFoundException {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
@@ -42,7 +41,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/followers", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getFollowersForUser(@RequestHeader("Authorization") String authHeader) throws DataQueryException {
+    public ResponseEntity<List<User>> getFollowersForUser(@RequestHeader("Authorization") String authHeader) throws DataQueryException, ObjectNotFoundException {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
@@ -79,7 +78,7 @@ public class UserController {
     @RequestMapping(value = "/unfollow", method = RequestMethod.POST)
     public ResponseEntity<User> unfollowUser(@RequestHeader("Authorization") String authHeader,
                                            @RequestParam(value = "id", required=false) Integer idToUnfollow,
-                                           @RequestParam(value = "handle", required=false) String handleToUnfollow) throws DataQueryException  {
+                                           @RequestParam(value = "handle", required=false) String handleToUnfollow) throws DataQueryException, ObjectNotFoundException {
 
 
         if (idToUnfollow == null && (handleToUnfollow == null || handleToUnfollow.isEmpty())) {
@@ -99,7 +98,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/shortestpath/{handleToSearch}", method = RequestMethod.GET)
-    public ResponseEntity<Integer> getShortestPathToUser(@RequestHeader("Authorization") String authHeader, @PathVariable String handleToSearch) throws DataQueryException {
+    public ResponseEntity<Integer> getShortestPathToUser(@RequestHeader("Authorization") String authHeader, @PathVariable String handleToSearch) throws DataQueryException, ObjectNotFoundException {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
