@@ -65,8 +65,6 @@ public class UserServiceImpl implements UserService{
         Map<User, Integer> forwardDistance = new HashMap<User, Integer>();
         Map<User, Integer> backwardDistance = new HashMap<User, Integer>();
 
-//        Map<Integer, Boolean> visited = new HashMap<Integer, Boolean>();
-
         Queue<User> forwardQueue = new LinkedList<User>();
         Queue<User> backwardQueue = new LinkedList<User>();
 
@@ -74,7 +72,6 @@ public class UserServiceImpl implements UserService{
             forwardDistance.put(u, Integer.MAX_VALUE);
             backwardDistance.put(u, Integer.MAX_VALUE);
 
-//            visited.put(u.getId(), false);
         }
         forwardDistance.put(forward, 0);
         backwardDistance.put(backward, 0);
@@ -82,7 +79,6 @@ public class UserServiceImpl implements UserService{
         forwardQueue.add(forward);
         backwardQueue.add(backward);
 
-        //TODO: fix this condition
         while(!forwardQueue.isEmpty() || !backwardQueue.isEmpty()){
             if(!forwardQueue.isEmpty()){
                 User currentForward = forwardQueue.remove();

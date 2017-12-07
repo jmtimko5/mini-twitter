@@ -90,9 +90,7 @@ public class UserController {
 
         String encodedCredentials = authHeader.split(" ")[1];
         String handle = new String(Base64.getDecoder().decode(encodedCredentials)).split(":")[0];
-
-        System.out.println(handleToSearch);
-
+        
         Integer result = userService.getShortestPathBetweenUsers(handle, handleToSearch);
 
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
